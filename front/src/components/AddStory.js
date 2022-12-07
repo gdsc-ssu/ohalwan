@@ -13,7 +13,6 @@ const StyleInput = styled.textarea({
 function AddStory({ open, setOpen, arr, setArr }) {
   const [body, setBody] = useState("");
   const changeBody = (i) => {
-    console.log(i);
     setBody(i.target.value);
   };
   return (
@@ -35,7 +34,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
           color="green"
           onClick={() => {
             const curarr = [...arr];
-            curarr.push({ name: "최상원", body: body });
+            curarr.push({ name: "최상원", body: body, heart: 0 });
             setArr(curarr);
             return setOpen(false);
           }}

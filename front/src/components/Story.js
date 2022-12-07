@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
+import StoryDetail from "./StoryDetail";
 
 const StyledStory = styled.div`
   display: inline-block;
@@ -8,6 +11,7 @@ const StyledStory = styled.div`
   border-radius: 30px;
   margin-right: 30px;
   margin-top: 30px;
+  cursor: pointer;
 `;
 
 const StyledHearder = styled.div({
@@ -38,17 +42,52 @@ const StyledImgArea = styled.img({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body }) {
+function Story({ name, body, heart, dark }) {
+  const [heartCheck, setHeartCheck] = useState(false);
+  const [storyOpen, setStoryOpen] = useState(false);
   return (
-    <StyledStory>
+    <StyledStory
+      onClick={() => {
+        setStoryOpen(true);
+      }}
+    >
       <StyledHearder>
         <StyledHearderImg src="https://react.semantic-ui.com/images/wireframe/image.png" />
         <StyledHearderText>{name}</StyledHearderText>
+        <div
+          style={{
+            display: "inline-block",
+            marginLeft: "140px",
+            marginTop: "5px",
+          }}
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setHeartCheck((res) => !res);
+            }}
+          >
+            {heartCheck === false ? (
+              <Icon size="big" name="heart" color="grey" />
+            ) : (
+              <Icon size="big" name="heart" color="red" />
+            )}
+          </div>
+          <div style={{ marginLeft: "12px" }}>{heartCheck ? 1 : 0}</div>
+        </div>
       </StyledHearder>
       <StyledTextArea>
         {body.length > 20 ? body.substr(0, 40) + "..." : body}
       </StyledTextArea>
       <StyledImgArea src="https://react.semantic-ui.com/images/wireframe/image.png" />
+      <StoryDetail
+        name={name}
+        body={body}
+        heart={heart}
+        storyOpen={storyOpen}
+        setStoryOpen={setStoryOpen}
+        dark={dark}
+      />
     </StyledStory>
   );
 }

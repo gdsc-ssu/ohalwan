@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import React from "react";
 import { Button } from "semantic-ui-react";
-import TodayDate from "../components/TodayDate";
 import Story from "../components/Story";
 import { useState } from "react";
 import AddStory from "../components/AddStory";
 
 const StyledMain = styled.div`
   height: 2000px;
-  padding-top: 70px;
+  padding-top: 30px;
   color: ${(props) => (props.dark === true ? "white" : "black")};
-  background-color: ${(props) => (props.dark === false ? "white" : "#999999")};
+  background-color: ${(props) => (props.dark === false ? "white" : "#777")};
 `;
 
 const MainBody = styled.div({
@@ -31,12 +30,7 @@ const MainText = styled.div`
 `;
 
 function Main({ darkmode, setDarkmode }) {
-  const [arr, setArr] = useState([
-    {
-      name: "최상원",
-      body: "adsjfh",
-    },
-  ]);
+  const [arr, setArr] = useState([]);
   const [storyOpen, setStoryOpen] = useState(false);
   const addStory = () => {
     const curarr = [...arr];
@@ -65,9 +59,10 @@ function Main({ darkmode, setDarkmode }) {
         </MainBodyTop>
         <MainBodyBottom>
           {arr.length > 0
-            ? arr.map((cur) => <Story name={cur.name} body={cur.body} />)
+            ? arr.map((cur) => <Story dark={darkmode} {...cur} />)
             : "nodata"}
         </MainBodyBottom>
+
         <AddStory
           open={storyOpen}
           setOpen={setStoryOpen}
