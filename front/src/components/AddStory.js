@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
 import styled from "styled-components";
+import { db } from "../firebase";
+
+import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 
 const StyleInput = styled.textarea({
   margin: "20px",
@@ -35,6 +38,16 @@ function AddStory({ open, setOpen, arr, setArr }) {
           onClick={() => {
             const curarr = [...arr];
             curarr.push({ name: "최상원", body: body, heart: 0 });
+            // const docRef = addDoc(collection(db, "local"), {
+            //   name: "Tokyo",
+            //   country: "Japan",
+            // });
+            const citiesRef = collection(db, "local");
+            setDoc(doc(citiesRef, "최상원"), {
+              name: "최상원",
+              body: body,
+              heart: 0,
+            });
             setArr(curarr);
             return setOpen(false);
           }}
