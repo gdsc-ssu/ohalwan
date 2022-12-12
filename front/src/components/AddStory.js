@@ -43,13 +43,22 @@ function AddStory({ open, setOpen, arr, setArr }) {
             //   country: "Japan",
             // });
             const citiesRef = collection(db, "local");
-            setDoc(doc(citiesRef, "최상원"), {
-              name: "최상원",
-              body: body,
-              heart: 0,
-            });
+            addDoc(
+              citiesRef,
+              {
+                name: "최상원",
+                body: body,
+                heart: 0,
+              },
+              { capital: true },
+              { merge: true }
+            );
             setArr(curarr);
             return setOpen(false);
+            // const docRef = await addDoc(collection(db, "cities"), {
+            //   name: "Tokyo",
+            //   country: "Japan"
+            // });
           }}
           positive
         />
