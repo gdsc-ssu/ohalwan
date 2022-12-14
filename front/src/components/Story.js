@@ -42,7 +42,7 @@ const StyledImgArea = styled.img({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark }) {
+function Story({ name, body, heart, dark, id }) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
   return (
@@ -87,6 +87,7 @@ function Story({ name, body, heart, dark }) {
         storyOpen={storyOpen}
         setStoryOpen={setStoryOpen}
         dark={dark}
+        id={id}
       />
     </StyledStory>
   );

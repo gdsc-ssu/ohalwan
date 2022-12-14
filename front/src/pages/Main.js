@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import AddStory from "../components/AddStory";
 import { db } from "../firebase";
 import { getDocs } from "firebase/firestore";
-import { collection, addDoc, setDoc } from "firebase/firestore";
+import { collection, query } from "firebase/firestore";
 
 const StyledMain = styled.div`
   height: 2000px;
@@ -39,11 +39,8 @@ function Main({ darkmode, setDarkmode }) {
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "local");
 
-  // 시작될때 한번만 실행
   useEffect(() => {
-    // 비동기로 데이터 받을준비
     const getUsers = async () => {
-      // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };

@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 import { Modal, Button } from "semantic-ui-react";
 import styled from "styled-components";
+import { db } from "../firebase";
+import { getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
 const StyledReview = styled.div`
   //background-color: ${(props) =>
     props.dark === false ? "white" : "#777777"};
   padding: 20px;
-  height: 150px;
+  height: 500px;
   overflow: auto;
 `;
 
@@ -26,16 +36,46 @@ const StyledReviewText = styled.div`
   width: 50px;
 `;
 
-function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark }) {
+function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const [changeReview, setChangeReview] = useState(false);
+
+  const usersCollectionRef = collection(db, `local/${id}/comment`);
+
+  useEffect(() => {
+    const q = query(usersCollectionRef, orderBy("timestamp", "desc"), limit(3));
+    console.log(q);
+    const getReview = async () => {
+      const data = await getDocs(
+        query(usersCollectionRef, orderBy("timestamp", "desc"))
+        // query(usersCollectionRef)
+      );
+      console.log(data);
+      const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setReview(result);
+    };
+    if (open) {
+      getReview();
+    }
+
+    // console.log(id, review);
+    // const q = query(usersCollectionRef, orderBy("name", "desc"));
+    // console.log(q);
+  }, [changeReview]);
+  // useEffect(() => {
+  // console.log(users);
+  // setArr(users);
+  // console.log("users", users);
+  // }, [review]);
 
   const changeBody = (i) => {
     setReviewText(i.target.value);
   };
   useEffect(() => {
     setStoryOpen(open);
+    setChangeReview((res) => !res);
   }, [open]);
   useEffect(() => {
     setOpen(storyOpen);
@@ -45,7 +85,7 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark }) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      size="tiny"
+      size="small"
     >
       <Modal.Header>{name}</Modal.Header>
       <Modal.Content>{body}</Modal.Content>
@@ -66,9 +106,22 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark }) {
             content="댓글추가"
             inverted
             onClick={() => {
-              const curreview = [...review];
-              curreview.push({ name: "최상원", review: reviewText });
-              setReview(curreview);
+              // const curreview = [...review];
+              // curreview.push({ name: "최상원", review: reviewText });
+              // setReview(curreview);
+              const citiesRef = collection(db, `local/${id}/comment`);
+              addDoc(
+                citiesRef,
+                {
+                  name: "최상원",
+                  text: reviewText,
+                  timestamp: new Date(),
+                },
+                { capital: true },
+                { merge: true }
+              );
+              setChangeReview((res) => !res);
+              // setReview(curarr);
             }}
             positive
           />
@@ -78,7 +131,7 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark }) {
             return (
               <StyledReviewLi>
                 <StyledReviewHeader>{e.name}</StyledReviewHeader>
-                <StyledReviewText>{e.review}</StyledReviewText>
+                <StyledReviewText>{e.text}</StyledReviewText>
               </StyledReviewLi>
             );
           })}
