@@ -4,9 +4,12 @@ import { Button } from "semantic-ui-react";
 import Story from "../components/Story";
 import { useState, useEffect } from "react";
 import AddStory from "../components/AddStory";
+
 import { db } from "../firebase";
-import { getDocs } from "firebase/firestore";
-import { collection, query } from "firebase/firestore";
+import { collection, query, getDocs, orderBy } from "firebase/firestore";
+
+import { useRecoilState } from "recoil";
+import { pageState } from "../atom";
 
 const StyledMain = styled.div`
   height: 2000px;
@@ -35,18 +38,26 @@ const MainText = styled.div`
 function Main({ darkmode, setDarkmode }) {
   const [arr, setArr] = useState([]);
   const [storyOpen, setStoryOpen] = useState(false);
+  const [page, setPage] = useRecoilState(pageState);
 
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "local");
 
   useEffect(() => {
+    setPage((cur) => !cur);
+  }, []);
+
+  useEffect(() => {
     const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
+      const data = await getDocs(
+        query(usersCollectionRef, orderBy("timestamp", "desc"))
+      );
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
     getUsers();
-  }, []);
+  }, [page]);
+
   useEffect(() => {
     console.log(users);
     setArr(users);
@@ -74,7 +85,14 @@ function Main({ darkmode, setDarkmode }) {
         </MainBodyTop>
         <MainBodyBottom>
           {arr.length > 0
-            ? arr.map((cur) => <Story dark={darkmode} {...cur} />)
+            ? arr.map((cur) => (
+                <Story
+                  dark={darkmode}
+                  {...cur}
+                  users={users}
+                  setUsers={setUsers}
+                />
+              ))
             : "nodata"}
         </MainBodyBottom>
 

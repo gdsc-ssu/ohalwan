@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import { db } from "../firebase";
 import { useSetRecoilState } from "recoil";
 import { pageState } from "../atom";
 
-import { collection, doc, addDoc, setDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 const StyleInput = styled.textarea({
   margin: "20px",
@@ -16,13 +16,18 @@ const StyleInput = styled.textarea({
   fontSize: "18px",
 });
 
-function AddStory({ open, setOpen, arr, setArr }) {
+function UpdateStory({ open, setOpen, id, text, name, heart }) {
   const [body, setBody] = useState("");
   const setPage = useSetRecoilState(pageState);
-
   const changeBody = (i) => {
     setBody(i.target.value);
   };
+  //   useEffect(() => {
+  //     if (open) {
+  //       setBody(text);
+  //       console.log(body);
+  //     }
+  //   });
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -30,8 +35,8 @@ function AddStory({ open, setOpen, arr, setArr }) {
       open={open}
       size="tiny"
     >
-      <Modal.Header>스토리 추가</Modal.Header>
-      <StyleInput onChange={changeBody}></StyleInput>
+      <Modal.Header>스토리 수정</Modal.Header>
+      <StyleInput onChange={changeBody}>{text}</StyleInput>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -41,28 +46,18 @@ function AddStory({ open, setOpen, arr, setArr }) {
           inverted
           color="green"
           onClick={() => {
-            // const docRef = addDoc(collection(db, "local"), {
-            //   name: "Tokyo",
-            //   country: "Japan",
-            // });
-            const citiesRef = collection(db, "local");
-            addDoc(
-              citiesRef,
-              {
-                name: "최상원",
+            const updateUsers = async () => {
+              const updateDoc = doc(db, "local", id);
+              await setDoc(updateDoc, {
+                name: name,
                 body: body,
-                heart: 0,
                 timestamp: new Date(),
-              },
-              { capital: true },
-              { merge: true }
-            );
+                heart: heart,
+              });
+            };
+            updateUsers();
             setPage((cur) => !cur);
-            return setOpen(false);
-            // const docRef = await addDoc(collection(db, "cities"), {
-            //   name: "Tokyo",
-            //   country: "Japan"
-            // });
+            setOpen(false);
           }}
           positive
         />
@@ -71,4 +66,4 @@ function AddStory({ open, setOpen, arr, setArr }) {
   );
 }
 
-export default AddStory;
+export default UpdateStory;

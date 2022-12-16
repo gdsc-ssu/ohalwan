@@ -3,14 +3,7 @@ import { Modal, Button } from "semantic-ui-react";
 import styled from "styled-components";
 import { db } from "../firebase";
 import { getDocs } from "firebase/firestore";
-import {
-  collection,
-  addDoc,
-  setDoc,
-  query,
-  orderBy,
-  limit,
-} from "firebase/firestore";
+import { collection, addDoc, query, orderBy } from "firebase/firestore";
 
 const StyledReview = styled.div`
   //background-color: ${(props) =>
@@ -45,30 +38,21 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
   const usersCollectionRef = collection(db, `local/${id}/comment`);
 
   useEffect(() => {
-    const q = query(usersCollectionRef, orderBy("timestamp", "desc"), limit(3));
-    console.log(q);
     const getReview = async () => {
       const data = await getDocs(
         query(usersCollectionRef, orderBy("timestamp", "desc"))
-        // query(usersCollectionRef)
       );
-      console.log(data);
-      const result = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const result = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        key: doc.id,
+      }));
       setReview(result);
     };
     if (open) {
       getReview();
     }
-
-    // console.log(id, review);
-    // const q = query(usersCollectionRef, orderBy("name", "desc"));
-    // console.log(q);
   }, [changeReview]);
-  // useEffect(() => {
-  // console.log(users);
-  // setArr(users);
-  // console.log("users", users);
-  // }, [review]);
 
   const changeBody = (i) => {
     setReviewText(i.target.value);

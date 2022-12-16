@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import StoryDetail from "./StoryDetail";
+import StoryDropDown from "./StroyDropDown";
 
 const StyledStory = styled.div`
   display: inline-block;
@@ -42,7 +43,7 @@ const StyledImgArea = styled.img({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark, id }) {
+function Story({ name, body, heart, dark, id, users, setUsers }) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
   return (
@@ -75,6 +76,14 @@ function Story({ name, body, heart, dark, id }) {
           </div>
           <div style={{ marginLeft: "12px" }}>{heartCheck ? 1 : 0}</div>
         </div>
+        <StoryDropDown
+          name={name}
+          body={body}
+          id={id}
+          heart={heart}
+          users={users}
+          setUsers={setUsers}
+        />
       </StyledHearder>
       <StyledTextArea>
         {body.length > 20 ? body.substr(0, 40) + "..." : body}
