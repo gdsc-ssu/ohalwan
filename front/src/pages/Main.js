@@ -11,7 +11,7 @@ import { collection, query, getDocs, orderBy } from "firebase/firestore";
 import { useRecoilState } from "recoil";
 import { pageState } from "../atom";
 
-const StyledMain = styled.div`
+export const StyledPage = styled.div`
   height: 2000px;
   padding-top: 30px;
   color: ${(props) => (props.dark === true ? "white" : "black")};
@@ -65,7 +65,7 @@ function Main({ darkmode, setDarkmode }) {
   }, [users]);
 
   return (
-    <StyledMain dark={darkmode}>
+    <StyledPage dark={darkmode}>
       <MainBody>
         <MainBodyTop>
           <div style={{ marginTop: "100px" }}>
@@ -103,7 +103,7 @@ function Main({ darkmode, setDarkmode }) {
           setArr={setArr}
         />
       </MainBody>
-    </StyledMain>
+    </StyledPage>
   );
 }
 

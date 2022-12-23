@@ -58,7 +58,7 @@ function Story({ name, body, heart, dark, id, users, setUsers }) {
         <div
           style={{
             display: "inline-block",
-            marginLeft: "140px",
+            marginLeft: "80px",
             marginTop: "5px",
           }}
         >
@@ -89,6 +89,7 @@ function Story({ name, body, heart, dark, id, users, setUsers }) {
         {body.length > 20 ? body.substr(0, 40) + "..." : body}
       </StyledTextArea>
       <StyledImgArea src="https://react.semantic-ui.com/images/wireframe/image.png" />
+
       <StoryDetail
         name={name}
         body={body}

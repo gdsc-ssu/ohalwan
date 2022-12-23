@@ -1,5 +1,9 @@
 import { Button, Icon } from "semantic-ui-react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+import { useRecoilValue } from "recoil";
+import { loginState } from "../atom";
 
 const StyledHearder = styled.div`
   width: 100%;
@@ -17,12 +21,34 @@ const StyledText = styled.div`
   display: inline-block;
   font-size: 30px;
   padding: 20px 0 0 20px;
+  cursor: pointer;
+  color: black;
 `;
 
 function Headers({ darkmode, setDarkmode }) {
+  const login = useRecoilValue(loginState);
+
   return (
     <StyledHearder dark={darkmode}>
-      <StyledText>오알완</StyledText>
+      <Link to="/">
+        <StyledText>오알완</StyledText>
+      </Link>
+      <div
+        style={{
+          display: "inline",
+          cursor: "pointer",
+          float: "right",
+          margin: "10px",
+        }}
+      >
+        {login ? (
+          "A"
+        ) : (
+          <Link to="/login">
+            <Button>로그인</Button>
+          </Link>
+        )}
+      </div>
       <div
         style={{
           display: "inline",
