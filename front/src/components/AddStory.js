@@ -18,11 +18,17 @@ const StyleInput = styled.textarea({
 
 function AddStory({ open, setOpen, arr, setArr }) {
   const [body, setBody] = useState("");
+  const [code, setCode] = useState("");
   const setPage = useSetRecoilState(pageState);
 
   const changeBody = (i) => {
     setBody(i.target.value);
   };
+
+  const changeCode = (c) => {
+    setCode(c.target.value);
+  };
+
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -32,6 +38,12 @@ function AddStory({ open, setOpen, arr, setArr }) {
     >
       <Modal.Header>스토리 추가</Modal.Header>
       <StyleInput onChange={changeBody}></StyleInput>
+      <textarea onChange={changeCode} style={{
+  margin: "20px",
+  width: "93%",
+  height: "200px",
+  fontSize: "18px",
+}}></textarea>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -51,6 +63,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
               {
                 name: "최상원",
                 body: body,
+                code: code,
                 heart: 0,
                 timestamp: new Date(),
               },
@@ -58,6 +71,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
               { merge: true }
             );
             setPage((cur) => !cur);
+            console.log("d");
             return setOpen(false);
             // const docRef = await addDoc(collection(db, "cities"), {
             //   name: "Tokyo",

@@ -3,6 +3,7 @@ import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import StoryDetail from "./StoryDetail";
 import StoryDropDown from "./StroyDropDown";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const StyledStory = styled.div`
   display: inline-block;
@@ -13,6 +14,7 @@ const StyledStory = styled.div`
   margin-right: 30px;
   margin-top: 30px;
   cursor: pointer;
+  overflow: hidden;
 `;
 
 const StyledHearder = styled.div({
@@ -43,9 +45,39 @@ const StyledImgArea = styled.img({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark, id, users, setUsers }) {
+
+
+
+function Story({ name, body, heart, dark, id, users, setUsers, code}) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
+  // const [code, setCode] = useState("");
+
+  // const onCodeChange = (e) => {
+  //   const { code, value } = e.target;
+  //   console.log(name, value);
+  //   setCode(value);
+  //   setStoryOpen(false);
+  // };
+
+  
+//   const note = document.createElement("div");
+//   note.classList.add("note");
+//   note.innerHTML = `<div class="notes">
+//   <div class="main ${code ? "" : "hidden"}"></div>
+//   <textarea class="${code ? "hidden" : ""}"></textarea>
+// </div>`;
+
+// const main = note.querySelector(".main");
+// const textArea = note.querySelector("textarea");
+
+// textArea.addEventListener("input", (e) => {
+//   const { value } = e.target;
+//   console.log(value);
+//   setStoryOpen(false);
+//   main.innerHTML = value;
+// });
+
   return (
     <StyledStory
       onClick={() => {
@@ -77,6 +109,7 @@ function Story({ name, body, heart, dark, id, users, setUsers }) {
           <div style={{ marginLeft: "12px" }}>{heartCheck ? 1 : 0}</div>
         </div>
         <StoryDropDown
+          code={code}
           name={name}
           body={body}
           id={id}
@@ -85,12 +118,22 @@ function Story({ name, body, heart, dark, id, users, setUsers }) {
           setUsers={setUsers}
         />
       </StyledHearder>
-      <StyledTextArea>
-        {body.length > 20 ? body.substr(0, 40) + "..." : body}
-      </StyledTextArea>
-      <StyledImgArea src="https://react.semantic-ui.com/images/wireframe/image.png" />
+      <div>
+        <StyledTextArea>
+          {body.length > 20 ? body.substr(0, 40) + "..." : body}
+
+        </StyledTextArea>
+
+      </div>
+      <div style={{backgroundColor: "#dfdee3", padding:"12px", height:"inherit"}}>
+          <ReactMarkdown>{code}</ReactMarkdown>
+        </div>
+      {/* <div class="main"></div>
+    <textarea >{code}
+      </textarea> */}
       <StoryDetail
         name={name}
+        code={code}
         body={body}
         heart={heart}
         storyOpen={storyOpen}

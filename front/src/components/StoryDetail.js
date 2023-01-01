@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { db } from "../firebase";
 import { getDocs } from "firebase/firestore";
 import { collection, addDoc, query, orderBy } from "firebase/firestore";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const StyledReview = styled.div`
   //background-color: ${(props) =>
@@ -29,7 +30,7 @@ const StyledReviewText = styled.div`
   width: 50px;
 `;
 
-function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
+function StoryDetail({ name, body, code, heart, storyOpen, setStoryOpen, dark, id }) {
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState([]);
   const [reviewText, setReviewText] = useState("");
@@ -73,6 +74,7 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
     >
       <Modal.Header>{name}</Modal.Header>
       <Modal.Content>{body}</Modal.Content>
+      <ReactMarkdown>{code}</ReactMarkdown>
       <StyledReview dark={dark}>
         <h3>댓글 목록</h3>
         <textarea

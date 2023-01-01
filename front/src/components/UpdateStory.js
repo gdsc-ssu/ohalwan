@@ -16,11 +16,16 @@ const StyleInput = styled.textarea({
   fontSize: "18px",
 });
 
-function UpdateStory({ open, setOpen, id, text, name, heart }) {
-  const [body, setBody] = useState("");
+function UpdateStory({ open, setOpen, md, id, text, name, heart }) {
+  const [body, setBody] = useState(text);
+  const [code, setCode] = useState(md);
   const setPage = useSetRecoilState(pageState);
   const changeBody = (i) => {
     setBody(i.target.value);
+  };
+
+  const changeCode = (c) => {
+    setCode(c.target.value);
   };
   //   useEffect(() => {
   //     if (open) {
@@ -37,6 +42,7 @@ function UpdateStory({ open, setOpen, id, text, name, heart }) {
     >
       <Modal.Header>스토리 수정</Modal.Header>
       <StyleInput onChange={changeBody}>{text}</StyleInput>
+      <textarea onChange={changeCode}>{md}</textarea>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -49,6 +55,7 @@ function UpdateStory({ open, setOpen, id, text, name, heart }) {
             const updateUsers = async () => {
               const updateDoc = doc(db, "local", id);
               await setDoc(updateDoc, {
+                code: code,
                 name: name,
                 body: body,
                 timestamp: new Date(),

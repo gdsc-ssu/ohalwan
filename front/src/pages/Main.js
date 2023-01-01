@@ -59,9 +59,8 @@ function Main({ darkmode, setDarkmode }) {
   }, [page]);
 
   useEffect(() => {
-    console.log(users);
     setArr(users);
-    console.log("users", users);
+    // console.log("users", users);
   }, [users]);
 
   return (
