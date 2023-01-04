@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Header, Image, Modal } from "semantic-ui-react";
+import { Button, Header, Image, Modal, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
 import { db } from "../firebase";
 
@@ -12,16 +12,41 @@ import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 const StyleInput = styled.textarea({
   margin: "20px",
   width: "93%",
-  height: "200px",
+  height: "100px",
+  fontSize: "18px",
+});
+const StyleInputCode = styled.textarea({
+  margin: "20px",
+  width: "93%",
+  height: "100px",
   fontSize: "18px",
 });
 
+const StyledName = styled.div`
+  display: inline-block;
+  width: 93%;
+  font-size: 20px;
+`;
+
+const languageOptions = [
+  { key: 1, text: "python", value: 1 },
+  { key: 2, text: "c++", value: 2 },
+  { key: 3, text: "java", value: 3 },
+  { key: 4, text: "javascript", value: 4 },
+  { key: 5, text: "typescript", value: 5 },
+];
+
 function AddStory({ open, setOpen, arr, setArr }) {
   const [body, setBody] = useState("");
+  const [code, setCode] = useState("");
+  const [codeLanguage, setCodeLanguage] = useState("");
   const setPage = useSetRecoilState(pageState);
 
   const changeBody = (i) => {
     setBody(i.target.value);
+  };
+  const changeCode = (i) => {
+    setCode(i.target.value);
   };
   return (
     <Modal
@@ -31,7 +56,18 @@ function AddStory({ open, setOpen, arr, setArr }) {
       size="tiny"
     >
       <Modal.Header>스토리 추가</Modal.Header>
+      <StyledName>게시글</StyledName>
       <StyleInput onChange={changeBody}></StyleInput>
+      <StyledName>코드</StyledName>
+      <Dropdown
+        placeholder="language"
+        options={languageOptions}
+        selection
+        onChange={(value) => {
+          setCodeLanguage(value.target.outerText);
+        }}
+      />
+      <StyleInputCode onChange={changeCode}></StyleInputCode>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -51,6 +87,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
               {
                 name: "최상원",
                 body: body,
+                code: "```" + codeLanguage + "\n" + code + "\n```",
                 heart: 0,
                 timestamp: new Date(),
               },

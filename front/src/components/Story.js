@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
+import Markdown from "../Markdown";
 import StoryDetail from "./StoryDetail";
 import StoryDropDown from "./StroyDropDown";
 
@@ -37,13 +38,13 @@ const StyledTextArea = styled.div({
   fontSize: "16px",
 });
 
-const StyledImgArea = styled.img({
+const StyledImgArea = styled.div({
   width: "100%",
   height: "335px",
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark, id, users, setUsers }) {
+function Story({ name, body, heart, dark, id, users, setUsers, code }) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
   return (
@@ -88,8 +89,9 @@ function Story({ name, body, heart, dark, id, users, setUsers }) {
       <StyledTextArea>
         {body.length > 20 ? body.substr(0, 40) + "..." : body}
       </StyledTextArea>
-      <StyledImgArea src="https://react.semantic-ui.com/images/wireframe/image.png" />
-
+      <StyledImgArea>
+        <Markdown code={code} />
+      </StyledImgArea>
       <StoryDetail
         name={name}
         body={body}
