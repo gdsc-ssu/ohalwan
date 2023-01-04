@@ -5,6 +5,9 @@ import Markdown from "../Markdown";
 import StoryDetail from "./StoryDetail";
 import StoryDropDown from "./StroyDropDown";
 
+import { useRecoilState } from "recoil";
+import { userInfo } from "../atom";
+
 const StyledStory = styled.div`
   display: inline-block;
   height: 450px;
@@ -46,9 +49,11 @@ const StyledImgArea = styled.div({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark, id, users, setUsers, code }) {
+function Story({ name, body, heart, dark, id, users, setUsers, code, email }) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
+  const [userdata, setUserData] = useRecoilState(userInfo);
+
   return (
     <StyledStory
       onClick={() => {
@@ -60,9 +65,10 @@ function Story({ name, body, heart, dark, id, users, setUsers, code }) {
         <StyledHearderText>{name}</StyledHearderText>
         <div
           style={{
-            display: "inline-block",
-            marginLeft: "120px",
+            display: "flex",
+            float: "right",
             marginTop: "5px",
+            marginLeft: "auto",
           }}
         >
           <div
@@ -70,23 +76,28 @@ function Story({ name, body, heart, dark, id, users, setUsers, code }) {
               e.stopPropagation();
               setHeartCheck((res) => !res);
             }}
+            style={{ display: "flex", flexDirection: "column" }}
           >
             {heartCheck === false ? (
               <Icon size="big" name="heart" color="grey" />
             ) : (
               <Icon size="big" name="heart" color="red" />
             )}
+            <div style={{ textAlign: "center", marginRight: "0.25rem" }}>
+              {heartCheck ? 1 : 0}
+            </div>
           </div>
-          <div style={{ marginLeft: "12px" }}>{heartCheck ? 1 : 0}</div>
+          {userdata.email === email ? (
+            <StoryDropDown
+              name={name}
+              body={body}
+              id={id}
+              heart={heart}
+              users={users}
+              setUsers={setUsers}
+            />
+          ) : null}
         </div>
-        <StoryDropDown
-          name={name}
-          body={body}
-          id={id}
-          heart={heart}
-          users={users}
-          setUsers={setUsers}
-        />
       </StyledHearder>
       <StyledTextArea>
         {body.length > 20 ? body.substr(0, 40) + "..." : body}

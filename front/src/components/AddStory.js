@@ -87,6 +87,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
               citiesRef,
               {
                 name: userdata.name,
+                email: userdata.email,
                 body: body,
                 code: "```" + codeLanguage + "\n" + code + "\n```",
                 heart: 0,
