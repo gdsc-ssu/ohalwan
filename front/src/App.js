@@ -38,6 +38,10 @@ function App() {
             path="/*"
             element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
           ></Route>
+          <Route
+            path="/"
+            element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
+          />
           <Route path="/login" element={<Login darkmode={darkmode} />} />
         </Routes>
       </RecoilRoot>

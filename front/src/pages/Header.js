@@ -1,8 +1,11 @@
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+
 import { Button, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginState } from "../atom";
 
 const StyledHearder = styled.div`
@@ -26,8 +29,13 @@ const StyledText = styled.div`
 `;
 
 function Headers({ darkmode, setDarkmode }) {
-  const login = useRecoilValue(loginState);
+  const [login, setLogin] = useRecoilState(loginState);
 
+  const logout = async () => {
+    await signOut(auth).then(() => {
+      setLogin(false);
+    });
+  };
   return (
     <StyledHearder dark={darkmode}>
       <Link to="/">
@@ -42,7 +50,7 @@ function Headers({ darkmode, setDarkmode }) {
         }}
       >
         {login ? (
-          "A"
+          <Button onClick={logout}>로그아웃</Button>
         ) : (
           <Link to="/login">
             <Button>로그인</Button>

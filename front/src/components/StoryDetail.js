@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { db } from "../firebase";
 import { getDocs } from "firebase/firestore";
 import { collection, addDoc, query, orderBy } from "firebase/firestore";
-
+import Markdown from "../Markdown";
 const StyledReview = styled.div`
   //background-color: ${(props) =>
     props.dark === false ? "white" : "#777777"};
@@ -29,7 +29,16 @@ const StyledReviewText = styled.div`
   width: 50px;
 `;
 
-function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
+function StoryDetail({
+  name,
+  body,
+  heart,
+  storyOpen,
+  setStoryOpen,
+  dark,
+  id,
+  code,
+}) {
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState([]);
   const [reviewText, setReviewText] = useState("");
@@ -73,42 +82,46 @@ function StoryDetail({ name, body, heart, storyOpen, setStoryOpen, dark, id }) {
     >
       <Modal.Header>{name}</Modal.Header>
       <Modal.Content>{body}</Modal.Content>
+      <Markdown code={code} />
       <StyledReview dark={dark}>
         <h3>댓글 목록</h3>
-        <textarea
-          style={{ width: "70%", height: "40px" }}
-          onChange={changeBody}
-        ></textarea>
-        <div
-          style={{
-            display: "inline-block",
-            width: "30%",
-            marginBottom: "10px",
-          }}
-        >
-          <Button
-            content="댓글추가"
-            inverted
-            onClick={() => {
-              // const curreview = [...review];
-              // curreview.push({ name: "최상원", review: reviewText });
-              // setReview(curreview);
-              const citiesRef = collection(db, `local/${id}/comment`);
-              addDoc(
-                citiesRef,
-                {
-                  name: "최상원",
-                  text: reviewText,
-                  timestamp: new Date(),
-                },
-                { capital: true },
-                { merge: true }
-              );
-              setChangeReview((res) => !res);
-              // setReview(curarr);
+        <div style={{ display: "flex" }}>
+          <textarea
+            style={{ width: "82%", height: "40px" }}
+            onChange={changeBody}
+          ></textarea>
+          <div
+            style={{
+              display: "inline-block",
+              width: "18%",
+              marginTop: "10px",
             }}
-            positive
-          />
+          >
+            <Button
+              size="large"
+              content="댓글추가"
+              inverted
+              onClick={() => {
+                // const curreview = [...review];
+                // curreview.push({ name: "최상원", review: reviewText });
+                // setReview(curreview);
+                const citiesRef = collection(db, `local/${id}/comment`);
+                addDoc(
+                  citiesRef,
+                  {
+                    name: "최상원",
+                    text: reviewText,
+                    timestamp: new Date(),
+                  },
+                  { capital: true },
+                  { merge: true }
+                );
+                setChangeReview((res) => !res);
+                // setReview(curarr);
+              }}
+              positive
+            />
+          </div>
         </div>
         <div style={{ border: `1px solid black` }}>
           {review.map((e) => {

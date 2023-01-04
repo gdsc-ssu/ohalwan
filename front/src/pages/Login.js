@@ -1,8 +1,8 @@
 import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { StyledPage } from "./Main";
+import Main, { StyledPage } from "./Main";
 import { Button } from "semantic-ui-react";
 
 import { db } from "../firebase";
@@ -10,6 +10,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 import { useResetRecoilState, useRecoilState } from "recoil";
 import { loginState, pageState } from "../atom";
+import { useNavigate } from "react-router-dom";
 
 const LoginBody = styled.div`
   padding-top: 100px;
@@ -27,6 +28,8 @@ function Login({ darkmode }) {
   const [userData, setUserData] = useState(null);
   const setPage = useResetRecoilState(pageState);
   const [login, setLogin] = useRecoilState(loginState);
+
+  const navigate = useNavigate();
 
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
@@ -47,6 +50,7 @@ function Login({ darkmode }) {
           { merge: true }
         );
         setLogin(true);
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +61,6 @@ function Login({ darkmode }) {
       setLogin(false);
     });
   };
-
   return (
     <StyledPage dark={darkmode}>
       <LoginBody>

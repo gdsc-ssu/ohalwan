@@ -14,6 +14,7 @@ const StyledStory = styled.div`
   margin-right: 30px;
   margin-top: 30px;
   cursor: pointer;
+  overflow: none;
 `;
 
 const StyledHearder = styled.div({
@@ -41,6 +42,7 @@ const StyledTextArea = styled.div({
 const StyledImgArea = styled.div({
   width: "100%",
   height: "335px",
+  overflow: "hidden",
   borderRadius: "0px 0px 30px 30px",
 });
 
@@ -59,7 +61,7 @@ function Story({ name, body, heart, dark, id, users, setUsers, code }) {
         <div
           style={{
             display: "inline-block",
-            marginLeft: "80px",
+            marginLeft: "120px",
             marginTop: "5px",
           }}
         >
@@ -100,6 +102,7 @@ function Story({ name, body, heart, dark, id, users, setUsers, code }) {
         setStoryOpen={setStoryOpen}
         dark={dark}
         id={id}
+        code={code}
       />
     </StyledStory>
   );
