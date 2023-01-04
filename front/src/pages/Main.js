@@ -5,11 +5,12 @@ import Story from "../components/Story";
 import { useState, useEffect } from "react";
 import AddStory from "../components/AddStory";
 
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import { collection, query, getDocs, orderBy } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { useRecoilState } from "recoil";
-import { pageState, loginState } from "../atom";
+import { pageState, loginState, userInfo } from "../atom";
 import First from "./First";
 
 export const StyledPage = styled.div`
@@ -41,12 +42,23 @@ function Main({ darkmode, setDarkmode }) {
   const [storyOpen, setStoryOpen] = useState(false);
   const [page, setPage] = useRecoilState(pageState);
   const [login, setLogin] = useRecoilState(loginState);
+  const [userdata, setUserData] = useRecoilState(userInfo);
 
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "local");
 
   useEffect(() => {
     setPage((cur) => !cur);
+  }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("AAAA");
+      } else {
+        console.log("BBBB");
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -59,19 +71,23 @@ function Main({ darkmode, setDarkmode }) {
 
     getUsers();
   }, [page]);
+  useEffect(() => {
+    // onAuthStateChanged(auth, (user) => console.log(user));
+  }, []);
 
   useEffect(() => {
-    console.log(users);
+    // console.log(users);
     setArr(users);
-    console.log("users", users);
+    // console.log("users", users);
   }, [users]);
+
   if (login) {
     return (
       <StyledPage dark={darkmode}>
         <MainBody>
           <MainBodyTop>
             <div style={{ marginTop: "100px" }}>
-              <MainText>---님 환영합니다!</MainText>
+              <MainText>{userdata.name}님 환영합니다!</MainText>
               <MainText>오늘 알고리즘 완료하셨나요?</MainText>
             </div>
             <div

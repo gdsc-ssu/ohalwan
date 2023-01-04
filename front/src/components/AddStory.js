@@ -4,8 +4,8 @@ import { Button, Header, Image, Modal, Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
 import { db } from "../firebase";
 
-import { useSetRecoilState } from "recoil";
-import { pageState } from "../atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { pageState, userInfo } from "../atom";
 
 import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 
@@ -40,6 +40,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
   const [body, setBody] = useState("");
   const [code, setCode] = useState("");
   const [codeLanguage, setCodeLanguage] = useState("");
+  const [userdata, setUserdata] = useRecoilState(userInfo);
   const setPage = useSetRecoilState(pageState);
 
   const changeBody = (i) => {
@@ -85,7 +86,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
             addDoc(
               citiesRef,
               {
-                name: "최상원",
+                name: userdata.name,
                 body: body,
                 code: "```" + codeLanguage + "\n" + code + "\n```",
                 heart: 0,

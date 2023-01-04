@@ -6,11 +6,12 @@ import Main, { StyledPage } from "./Main";
 import { Button } from "semantic-ui-react";
 
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 import { useResetRecoilState, useRecoilState } from "recoil";
-import { loginState, pageState } from "../atom";
+import { loginState, pageState, userInfo } from "../atom";
 import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const LoginBody = styled.div`
   padding-top: 100px;
@@ -25,20 +26,29 @@ const LoginBox = styled.div`
 `;
 
 function Login({ darkmode }) {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useRecoilState(userInfo);
   const setPage = useResetRecoilState(pageState);
   const [login, setLogin] = useRecoilState(loginState);
-
   const navigate = useNavigate();
+
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     // 사용자 로그인 시 동작
+  //     console.log("login");
+  //     return;
+  //   }
+  //   // 사용자 로그아웃 시 동작
+  //   console.log("logout");
+  // });
 
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
-        setUserData(data.user); // user data 설정
+        // setUserData(data.user); // user data 설정
         console.log(data); // console로 들어온 데이터 표시
-        const citiesRef = collection(db, "users");
-        addDoc(
+        const citiesRef = doc(db, "users", data.user.email);
+        setDoc(
           citiesRef,
           {
             name: data.user.displayName,
@@ -49,6 +59,11 @@ function Login({ darkmode }) {
           { capital: true },
           { merge: true }
         );
+        setUserData({
+          name: data.user.displayName,
+          email: data.user.email,
+          accessToken: data.user.accessToken,
+        });
         setLogin(true);
         navigate("/");
       })

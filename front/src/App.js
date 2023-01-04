@@ -19,7 +19,7 @@ function App() {
     const getUsers = async () => {
       // getDocs로 컬렉션안에 데이터 가져오기
       const data = await getDocs(usersCollectionRef);
-      console.log(data);
+      // console.log(data);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
@@ -27,7 +27,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(users);
+    // console.log(users);
   }, [users]);
   return (
     <BrowserRouter>

@@ -50,7 +50,9 @@ function Headers({ darkmode, setDarkmode }) {
         }}
       >
         {login ? (
-          <Button onClick={logout}>로그아웃</Button>
+          <Link to="/login">
+            <Button>내정보</Button>
+          </Link>
         ) : (
           <Link to="/login">
             <Button>로그인</Button>
