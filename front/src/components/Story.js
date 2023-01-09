@@ -39,11 +39,11 @@ const StyledTextArea = styled.div({
   fontSize: "16px",
 });
 
-const StyledImgArea = styled.img({
-  width: "100%",
-  height: "335px",
-  borderRadius: "0px 0px 30px 30px",
-});
+// const StyledImgArea = styled.img({
+//   width: "100%",
+//   height: "335px",
+//   borderRadius: "0px 0px 30px 30px",
+// });
 
 
 

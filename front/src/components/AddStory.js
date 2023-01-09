@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { useState } from "react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
 import styled from "styled-components";
@@ -9,6 +9,21 @@ import { pageState } from "../atom";
 
 import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 
+import ReactMarkDown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import {
+  docco,
+  dark,
+  ocean,
+} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import language from "react-syntax-highlighter/dist/esm/languages/hljs/1c";
+// import ReactMarkDown from "react-markdown";
+// import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// import {
+//   vscDarkPlus,
+//   docco
+// } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 const StyleInput = styled.textarea({
   margin: "20px",
   width: "93%",
@@ -18,15 +33,11 @@ const StyleInput = styled.textarea({
 
 function AddStory({ open, setOpen, arr, setArr }) {
   const [body, setBody] = useState("");
-  const [code, setCode] = useState("");
+  const [input, setInput] = useState();
   const setPage = useSetRecoilState(pageState);
 
   const changeBody = (i) => {
     setBody(i.target.value);
-  };
-
-  const changeCode = (c) => {
-    setCode(c.target.value);
   };
 
   return (
@@ -37,13 +48,27 @@ function AddStory({ open, setOpen, arr, setArr }) {
       size="tiny"
     >
       <Modal.Header>스토리 추가</Modal.Header>
+
       <StyleInput onChange={changeBody}></StyleInput>
-      <textarea onChange={changeCode} style={{
-  margin: "20px",
-  width: "93%",
-  height: "200px",
-  fontSize: "18px",
-}}></textarea>
+      <div>
+        <textarea
+          onChange={(e) => setInput(e.target.value)}
+          style={{
+            margin: "20px",
+            width: "93%",
+            height: "200px",
+            fontSize: "18px",
+          }}
+          autoFocus
+          value={input}
+        />
+        <ReactMarkDown
+          // source={input}
+          components={{ code: Markdown }}
+          children={input}
+          className="markdown"
+        />
+      </div>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -63,12 +88,12 @@ function AddStory({ open, setOpen, arr, setArr }) {
               {
                 name: "최상원",
                 body: body,
-                code: code,
+                code: input,
                 heart: 0,
                 timestamp: new Date(),
               },
               { capital: true },
-              { merge: true }
+              { merge: true },
             );
             setPage((cur) => !cur);
             console.log("d");
@@ -84,5 +109,15 @@ function AddStory({ open, setOpen, arr, setArr }) {
     </Modal>
   );
 }
+const Markdown = (props) => {
+  const codeInput = props.children[0];
+  const language = props.className?.slice(9);
+  console.log(language);
+  return (
+    <SyntaxHighlighter style={ocean} language={language} showLineNumbers={true}>
+      {codeInput ?? ""}
+    </SyntaxHighlighter>
+  );
+};
 
 export default AddStory;
