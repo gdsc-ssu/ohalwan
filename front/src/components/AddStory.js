@@ -89,6 +89,7 @@ function AddStory({ open, setOpen, arr, setArr }) {
                 name: userdata.name,
                 email: userdata.email,
                 body: body,
+                codeLanguage: codeLanguage,
                 code: "```" + codeLanguage + "\n" + code + "\n```",
                 heart: 0,
                 timestamp: new Date(),

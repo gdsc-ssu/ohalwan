@@ -5,9 +5,9 @@ import Story from "../components/Story";
 import { useState, useEffect } from "react";
 import AddStory from "../components/AddStory";
 
-import { db, auth } from "../firebase";
+import { db, auth, apiKey } from "../firebase";
 import { collection, query, getDocs, orderBy } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 import { useRecoilState } from "recoil";
 import { pageState, loginState, userInfo } from "../atom";
@@ -15,9 +15,13 @@ import First from "./First";
 
 export const StyledPage = styled.div`
   height: 2000px;
+  overflow: auto;
   padding-top: 30px;
-  color: ${(props) => (props.dark === true ? "white" : "black")};
-  background-color: ${(props) => (props.dark === false ? "white" : "#777")};
+  // color: ${(props) => (props.dark === true ? "white" : "black")};
+  // background-color: ${(props) =>
+    props.dark === false ? "white" : "#18181b"};
+  color: white;
+  background-color: #18181b;
 `;
 
 const MainBody = styled.div({
@@ -59,6 +63,25 @@ function Main({ darkmode, setDarkmode }) {
         console.log("BBBB");
       }
     });
+  }, []);
+
+  useEffect(() => {
+    const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
+    const is_login = sessionStorage.getItem(_session_key);
+    if (is_login && login === false) {
+      setLogin((cur) => !cur);
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUserData({
+            name: user.displayName,
+            email: user.email,
+            accessToken: user.accessToken,
+          });
+        } else {
+          signOut();
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -124,7 +147,7 @@ function Main({ darkmode, setDarkmode }) {
       </StyledPage>
     );
   } else {
-    return <First />;
+    return <First darkmode={darkmode} />;
   }
 }
 

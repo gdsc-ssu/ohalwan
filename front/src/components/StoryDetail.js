@@ -7,7 +7,7 @@ import { collection, addDoc, query, orderBy } from "firebase/firestore";
 import Markdown from "../Markdown";
 const StyledReview = styled.div`
   //background-color: ${(props) =>
-    props.dark === false ? "white" : "#777777"};
+    props.dark === false ? "white" : "#18181b"};
   padding: 20px;
   height: 500px;
   overflow: auto;
@@ -16,17 +16,17 @@ const StyledReview = styled.div`
 const StyledReviewLi = styled.div`
   font-size: 16px;
   border-bottom: 1px #e1e1e1 solid;
-  display: flex;
 `;
 
 const StyledReviewHeader = styled.div`
+  display: inline-block;
   width: 70px;
   padding: 10px;
 `;
 const StyledReviewText = styled.div`
   display: inline-block;
   margin-top: 20px;
-  width: 50px;
+  width: 70%;
 `;
 
 function StoryDetail({
@@ -85,7 +85,7 @@ function StoryDetail({
       <Markdown code={code} />
       <StyledReview dark={dark}>
         <h3>댓글 목록</h3>
-        <div style={{ display: "flex" }}>
+        <div style={{}}>
           <textarea
             style={{ width: "82%", height: "40px" }}
             onChange={changeBody}
@@ -117,6 +117,7 @@ function StoryDetail({
                   { merge: true }
                 );
                 setChangeReview((res) => !res);
+
                 // setReview(curarr);
               }}
               positive

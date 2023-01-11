@@ -18,6 +18,7 @@ const StyledStory = styled.div`
   margin-top: 30px;
   cursor: pointer;
   overflow: none;
+  background-color: #24262e;
 `;
 
 const StyledHearder = styled.div({
@@ -49,7 +50,18 @@ const StyledImgArea = styled.div({
   borderRadius: "0px 0px 30px 30px",
 });
 
-function Story({ name, body, heart, dark, id, users, setUsers, code, email }) {
+function Story({
+  name,
+  body,
+  heart,
+  dark,
+  id,
+  users,
+  setUsers,
+  code,
+  email,
+  codeLanguage,
+}) {
   const [heartCheck, setHeartCheck] = useState(false);
   const [storyOpen, setStoryOpen] = useState(false);
   const [userdata, setUserData] = useRecoilState(userInfo);
@@ -95,6 +107,8 @@ function Story({ name, body, heart, dark, id, users, setUsers, code, email }) {
               heart={heart}
               users={users}
               setUsers={setUsers}
+              code={code}
+              codeLanguage={codeLanguage}
             />
           ) : null}
         </div>

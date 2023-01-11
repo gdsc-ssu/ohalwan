@@ -7,7 +7,17 @@ import UpdateStory from "./UpdateStory";
 import { atom, useRecoilState } from "recoil";
 import { pageState } from "../atom";
 
-function StoryDropDown({ id, dark, users, setUsers, name, body, heart }) {
+function StoryDropDown({
+  id,
+  dark,
+  users,
+  setUsers,
+  name,
+  body,
+  heart,
+  code,
+  codeLanguage,
+}) {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [page, setPage] = useRecoilState(pageState);
 
@@ -18,7 +28,7 @@ function StoryDropDown({ id, dark, users, setUsers, name, body, heart }) {
     }
   };
   const updateItem = () => {
-    setUpdateOpen(true);
+    // setUpdateOpen(true);
   };
   return (
     <Dropdown>
@@ -28,12 +38,14 @@ function StoryDropDown({ id, dark, users, setUsers, name, body, heart }) {
         <UpdateStory
           id={id}
           users={users}
-          text={body}
+          body={body}
           name={name}
           open={updateOpen}
           setOpen={setUpdateOpen}
           heart={heart}
           setUsers={setUsers}
+          code={code}
+          codeLanguage={codeLanguage}
         />
       </Dropdown.Menu>
     </Dropdown>

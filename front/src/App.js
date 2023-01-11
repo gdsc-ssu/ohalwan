@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import Headers from "./pages/Header";
 import Main from "./pages/Main";
-import { db } from "./firebase";
+import { db, apiKey } from "./firebase";
 import { getDocs } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Login from "./pages/Login";
+
+import { useRecoilState } from "recoil";
+import { pageState, loginState, userInfo } from "./atom";
 
 function App() {
   const [darkmode, setDarkmode] = useState(false);
@@ -42,7 +45,10 @@ function App() {
             path="/"
             element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
           />
-          <Route path="/login" element={<Login darkmode={darkmode} />} />
+          <Route
+            path="/login"
+            element={<Login darkmode={darkmode} setDarkmode={setDarkmode} />}
+          />
         </Routes>
       </RecoilRoot>
     </BrowserRouter>

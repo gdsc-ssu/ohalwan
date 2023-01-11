@@ -16,18 +16,25 @@ const StyleInput = styled.textarea({
   fontSize: "18px",
 });
 
-function UpdateStory({ open, setOpen, id, text, name, heart }) {
-  const [body, setBody] = useState("");
+function UpdateStory({
+  open,
+  setOpen,
+  id,
+  body,
+  name,
+  heart,
+  code,
+  codeLanguage,
+}) {
+  const [updateBody, setUpdateBody] = useState("");
+  const [updatecode, setUpdateCode] = useState("");
   const setPage = useSetRecoilState(pageState);
   const changeBody = (i) => {
-    setBody(i.target.value);
+    setUpdateBody(i.target.value);
   };
-  //   useEffect(() => {
-  //     if (open) {
-  //       setBody(text);
-  //       console.log(body);
-  //     }
-  //   });
+  const changeCode = (i) => {
+    setUpdateCode(i.target.value);
+  };
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -36,7 +43,8 @@ function UpdateStory({ open, setOpen, id, text, name, heart }) {
       size="tiny"
     >
       <Modal.Header>스토리 수정</Modal.Header>
-      <StyleInput onChange={changeBody}>{text}</StyleInput>
+      <StyleInput onChange={changeBody}>{body}</StyleInput>
+      <StyleInput onChange={changeCode}>{code}</StyleInput>
       <Modal.Actions>
         <Button color="grey" onClick={() => setOpen(false)}>
           닫기
@@ -50,8 +58,9 @@ function UpdateStory({ open, setOpen, id, text, name, heart }) {
               const updateDoc = doc(db, "local", id);
               await setDoc(updateDoc, {
                 name: name,
-                body: body,
-                timestamp: new Date(),
+                body: updateBody,
+
+                code: updatecode,
                 heart: heart,
               });
             };

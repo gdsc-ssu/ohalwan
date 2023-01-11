@@ -17,15 +17,19 @@ const StyledHearder = styled.div`
   border-bottom: 1px solid #e1e1e1;
   background-color: white;
   // background: 'linear-gradient(90.22deg, #496ACE -1.38%, #715DEB 92.8%)',
-  background-color: ${(props) => (props.dark === false ? "white" : "#666666")};
-  color: ${(props) => (props.dark === true ? "white" : "black")};
+  // background-color: ${(props) =>
+    props.dark === false ? "white" : "#18181b"};
+  background-color: #18181b;
+  // color: ${(props) => (props.dark === true ? "white" : "black")};
+  color: white;
 `;
 const StyledText = styled.div`
   display: inline-block;
   font-size: 30px;
   padding: 20px 0 0 20px;
   cursor: pointer;
-  color: black;
+  // color: ${(props) => (props.dark === true ? "white" : "black")};
+  color: white;
 `;
 
 function Headers({ darkmode, setDarkmode }) {
@@ -39,7 +43,7 @@ function Headers({ darkmode, setDarkmode }) {
   return (
     <StyledHearder dark={darkmode}>
       <Link to="/">
-        <StyledText>오알완</StyledText>
+        <StyledText dark={darkmode}>오알완</StyledText>
       </Link>
       <div
         style={{
