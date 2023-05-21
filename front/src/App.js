@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 
 import { useRecoilState } from "recoil";
 import { pageState, loginState, userInfo } from "./atom";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const [darkmode, setDarkmode] = useState(false);
@@ -33,25 +34,30 @@ function App() {
     // console.log(users);
   }, [users]);
   return (
-    <BrowserRouter>
-      <RecoilRoot>
-        <Headers darkmode={darkmode} setDarkmode={setDarkmode} />
-        <Routes>
-          <Route
-            path="/*"
-            element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
-          ></Route>
-          <Route
-            path="/"
-            element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
-          />
-          <Route
-            path="/login"
-            element={<Login darkmode={darkmode} setDarkmode={setDarkmode} />}
-          />
-        </Routes>
-      </RecoilRoot>
-    </BrowserRouter>
+    <div></div>
+    // <BrowserRouter>
+    //   <RecoilRoot>
+    //     <Headers darkmode={darkmode} setDarkmode={setDarkmode} />
+    //     <Routes>
+    //       <Route
+    //         path="/*"
+    //         element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
+    //       ></Route>
+    //       <Route
+    //         path="/"
+    //         element={<Main darkmode={darkmode} setDarkmode={setDarkmode} />}
+    //       />
+    //       <Route
+    //         path="/login"
+    //         element={<Login darkmode={darkmode} setDarkmode={setDarkmode} />}
+    //       />
+    //       <Route
+    //         path="/signup"
+    //         element={<SignUp darkmode={darkmode} setDarkmode={setDarkmode} />}
+    //       />
+    //     </Routes>
+    //   </RecoilRoot>
+    // </BrowserRouter>
   );
 }
 

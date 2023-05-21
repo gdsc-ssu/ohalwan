@@ -19,28 +19,6 @@ import { loginState, pageState, userInfo } from "../atom";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-// import {
-//   getAuth,
-//   setPersistence,
-//   signInWithEmailAndPassword,
-//   browserSessionPersistence,
-// } from "firebase/auth";
-
-// setPersistence(auth, browserSessionPersistence)
-//   .then(() => {
-//     // Existing and future Auth states are now persisted in the current
-//     // session only. Closing the window would clear any existing state even
-//     // if a user forgets to sign out.
-//     // ...
-//     // New sign-in will be persisted with session persistence.
-//     return signInWithEmailAndPassword(auth, email, password);
-//   })
-//   .catch((error) => {
-//     // Handle Errors here.
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//   });
-
 const LoginBody = styled.div`
   padding-top: 100px;
   padding-left: 32vw;
@@ -105,16 +83,6 @@ function Login({ darkmode }) {
   const [passwd, setPasswd] = useState("");
 
   const navigate = useNavigate();
-
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     // 사용자 로그인 시 동작
-  //     console.log("login");
-  //     return;
-  //   }
-  //   // 사용자 로그아웃 시 동작
-  //   console.log("logout");
-  // });
 
   const loginIdChange = (i) => {
     setId(i.target.value);
